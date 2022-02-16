@@ -8,7 +8,7 @@ const topMenus = [
 
 <template>
   <header>
-    <span id="nscm-logo">三湘银行产品编排系统</span>
+    <span id="nscm-logo">XX银行产品编排系统</span>
     <div class="nscm-topbar">
       <el-menu mode="horizontal" default-active="1" :ellipsis="false">
         <el-menu-item v-for="(item, index) in topMenus" :index="index + 1 + ''" :key="item.key">
@@ -53,5 +53,14 @@ body {
   display: inline-block;
   position: absolute;
   right: 5%;
+}
+</style>
+<style>
+html {
+  height: 100%;
+}
+body {
+  margin: 0;
+  overflow-y: hidden;
 }
 </style>
