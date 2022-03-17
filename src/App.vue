@@ -1,17 +1,17 @@
 <script setup>
 import { CreditCard, Cpu, Warning } from '@element-plus/icons-vue'
 const topMenus = [
-  { key: '001', title: '原子服务' },
-  { key: '002', title: '产品编排' },
-  { key: '003', title: '关于' }]
+  { key: '001', title: '原子服务', url: '/atom' },
+  { key: '002', title: '产品编排', url: '/product' },
+  { key: '003', title: '关于', url: '/ppos'}]
 </script>
 
 <template>
   <header>
     <span id="nscm-logo">XX银行产品编排系统</span>
     <div class="nscm-topbar">
-      <el-menu mode="horizontal" default-active="1" :ellipsis="false">
-        <el-menu-item v-for="(item, index) in topMenus" :index="index + 1 + ''" :key="item.key">
+      <el-menu mode="horizontal" default-active="1" :ellipsis="false" router>
+        <el-menu-item v-for="(item, index) in topMenus" :index="item.url" :key="item.key">
           <el-icon v-if="item.key == '001'">
             <cpu />
           </el-icon>
@@ -30,13 +30,6 @@ const topMenus = [
 </template>
 
 <style lang="scss" scoped>
-html {
-  height: 100%;
-}
-body {
-  margin: 0;
-  overflow-y: hidden;
-}
 #app > header {
   width: 100%;
   height: 59px;
@@ -61,6 +54,5 @@ html {
 }
 body {
   margin: 0;
-  overflow-y: hidden;
 }
 </style>

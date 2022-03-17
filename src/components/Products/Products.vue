@@ -1,12 +1,15 @@
 <script setup>
 import { ArrowLeft, Search, Edit } from '@element-plus/icons-vue'
-import { ref } from 'vue'
-const sideMenusAtom = [
-  { key: '001', title: '检验类', menus: [{ key: '101', title: '证件审查接口' }, { key: '102', title: '用户信息检验接口' }] },
-  { key: '002', title: '计算类', menus: [{ key: '103', title: '利息计算接口' }, { key: '104', title: '结息期计算接口' }] },
-  { key: '003', title: '控制类', menus: [{ key: '105', title: '白名单控制接口' }] },
-  { key: '004', title: 'IO类', menus: [{ key: '106', title: '流水储存接口' }] }]
+import { getCurrentInstance, onMounted, ref, reactive } from 'vue'
+import ProductsList from './ProductsList.vue'
+const { proxy } = getCurrentInstance()
+const sideMenusProducts = reactive({value:[]})
 const keyWord = ref('')
+onMounted(()=>{
+  proxy.$http.ProductsAPI.getTreeOfProducts().then((rsp)=>{
+    sideMenusProducts.value = rsp.data
+  })
+})
 </script>
 
 <template>
@@ -21,16 +24,16 @@ const keyWord = ref('')
         >
           <el-menu-item :index="'000'" :key="'000'">全部</el-menu-item>
           <el-sub-menu
-            v-for="(submenus, index) in sideMenusAtom"
+            v-for="(submenus, index) in sideMenusProducts.value"
             :index="index + 1 + ''"
-            :key="submenus.key"
+            :key="index"
           >
-            <template #title>{{ submenus.title }}</template>
+            <template #title>{{ submenus.productType }}</template>
             <el-menu-item
-              v-for="(item, subIndex) in submenus.menus"
+              v-for="(item, subIndex) in submenus.products"
               :index="(index + 1) + '-' + (subIndex + 1)"
-              :key="item.key"
-            >{{ item.title }}</el-menu-item>
+              :key="subIndex"
+            >{{ item.productId}}</el-menu-item>
           </el-sub-menu>
         </el-menu>
       </el-aside>
@@ -42,7 +45,9 @@ const keyWord = ref('')
             <el-button type="primary" :icon="Edit" circle></el-button>
           </div>
         </el-header>
-        <el-main></el-main>
+        <el-main>
+          <ProductsList></ProductsList>
+        </el-main>
       </el-container>
     </el-container>
   </div>
@@ -58,8 +63,8 @@ const keyWord = ref('')
     position: relative;
   }
   .el-main {
-    background-color: #bdbdbd;
-    height: calc(100vh);
+    // background-color: #bdbdbd;
+    height: calc(100vh - 60px - 60px); // 减去内页头和外页头
   }
 }
 .nscm-sidebar {
