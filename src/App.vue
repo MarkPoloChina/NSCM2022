@@ -8,7 +8,7 @@ const topMenus = [
 
 <template>
   <header>
-    <span id="nscm-logo">XX银行产品编排系统</span>
+    <span id="nscm-logo">湘丰智排</span>
     <div class="nscm-topbar">
       <el-menu mode="horizontal" default-active="1" :ellipsis="false" router>
         <el-menu-item v-for="(item, index) in topMenus" :index="item.url" :key="item.key">

@@ -1,6 +1,15 @@
 <script setup>
 import { useStore } from 'vuex'
 import { ArrowLeft } from '@element-plus/icons-vue'
+import PPOSWorkplace from './PPOSWorkplace.vue'
+import { getCurrentInstance, onMounted, reactive } from 'vue'
+const { proxy } = getCurrentInstance()
+const atomsList = reactive({value:[]})
+onMounted(()=> {
+  proxy.$http.AtomsAPI.getAtoms().then((rsp)=>{
+    atomsList.value = rsp.data
+  })
+})
 </script>
 
 <template>
@@ -13,9 +22,9 @@ import { ArrowLeft } from '@element-plus/icons-vue'
           class="nscm-sidebar"
           background-color="#e9e9e9"
         >
-          <el-menu-item :index="'000'" :key="'000'">全部</el-menu-item>
+          <!-- <el-menu-item :index="'000'" :key="'000'">全部</el-menu-item>
           <el-sub-menu
-            v-for="(submenus, index) in []"
+            v-for="(submenus, index) in atomsList"
             :index="index + 1 + ''"
             :key="index"
           >
@@ -25,7 +34,13 @@ import { ArrowLeft } from '@element-plus/icons-vue'
               :index="(index + 1) + '-' + (subIndex + 1)"
               :key="subIndex"
             >{{ item.productId}}</el-menu-item>
-          </el-sub-menu>
+          </el-sub-menu> -->
+          <el-menu-item
+              v-for="(item, subIndex) in atomsList.value"
+              :index="subIndex+''"
+              :key="subIndex"
+              draggable="true"
+            >{{ item.serviceName}}</el-menu-item>
         </el-menu>
       </el-aside>
       <el-container>
@@ -36,6 +51,7 @@ import { ArrowLeft } from '@element-plus/icons-vue'
           </div>
         </el-header>
         <el-main>
+          <PPOSWorkplace></PPOSWorkplace>
         </el-main>
       </el-container>
     </el-container>
