@@ -12,10 +12,10 @@ const faceDrop = (e) => {
 let list = reactive({ value: [] })
 onMounted(() => {
   
-  Axios.get('http://nicklorry.top:8089/bdp/api/ppos/test/getJson',{
+  Axios.get('http://nicklorry.top:8091/bdp/api/ppos/test/getJson',{
         params: {param: 1}
       }).then((rsp)=>{
-    list.value = buildLevel(reactive(rsp.data))
+    list.value = buildLevel(reactive(rsp.data.data))
     console.log(list.value)
   })
   // const test_json = reactive(store.getters.test_getJson)
@@ -53,7 +53,7 @@ const buildLevel = (json_obj) => {
   while (true) {
     let waitToPush = new Set
     list[list.length-1].forEach((piece)=>{
-      if (piece.next ===null && piece.type!=='EndPiece') {
+      if (!piece.next && piece.type!=='EndPiece') {
         if (map_obj[piece.nextId]===undefined) {
           console.log(piece.nextId)
         }
@@ -136,10 +136,13 @@ const ondragenter = (e) => {
 <style lang='scss' scoped>
 .ppos-main {
   display: table;
-  height: 100%;
+  height: calc(100% - 10px);
   width: 100%;
+  margin-top: 10px;
+  border-radius: 10px;
   text-align: center;
-  background: #58a;
+  // background: #58a;
+  background: #2581eb5f;
   background-position: center;
   background-image: linear-gradient(white 2px, transparent 0),
     linear-gradient(90deg, white 2px, transparent 0),
