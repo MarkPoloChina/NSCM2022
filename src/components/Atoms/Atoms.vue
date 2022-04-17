@@ -1,7 +1,9 @@
 <script setup>
+import { useStore } from 'vuex'
 import { ArrowLeft, Search, Edit } from '@element-plus/icons-vue'
 import { getCurrentInstance, onMounted, ref, reactive } from 'vue'
 import AtomsList from './AtomsList.vue'
+const store = useStore()
 const { proxy } = getCurrentInstance()
 const sideMenusAtom = reactive({ value: [] })
 const atomsList = reactive({
@@ -28,6 +30,10 @@ onMounted(() => {
     atomsList.value = rsp.data
   })
 })
+const show = ()=> {
+  console.log('hh')
+  atomsList.value = store.getters.test_tree2
+}
 </script>
 
 <template>
@@ -38,7 +44,7 @@ onMounted(() => {
           mode="vertical"
           default-active="000"
           class="nscm-sidebar"
-          background-color="#F5F5F5"
+          background-color="#ffffff"
         >
           <el-menu-item :index="'000'" :key="'000'">全部</el-menu-item>
           <el-sub-menu
@@ -51,6 +57,7 @@ onMounted(() => {
               v-for="(item, subIndex) in submenus.serviceDivisions"
               :index="(index + 1) + '-' + (subIndex + 1)"
               :key="subIndex"
+              @click="show"
             >{{ item.serviceDivision }}</el-menu-item>
           </el-sub-menu>
         </el-menu>
@@ -76,7 +83,7 @@ onMounted(() => {
 <style lang='scss' scoped>
 .nscm-main {
   .el-header {
-    background-color: #F5F5F5;
+    background-color: #ffffff;
     height: 60px;
     position: relative;
     margin-top: 10px;

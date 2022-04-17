@@ -2,7 +2,7 @@
   <div>
     <el-descriptions title="产品属性修改" :column="3" border>
       <template #extra>
-        <el-button type="primary">保存</el-button>
+        <el-button type="primary" @click="$emit('close')">保存</el-button>
       </template>
       <el-descriptions-item>
         <template #label>
@@ -41,8 +41,8 @@
           <div class="cell-item">产品风险</div>
         </template>
         <el-select v-model="product.riskLevel" placeholder="Select" size="large">
-          <el-option v-for="item in [{ value: product.riskLevel, label: product.riskLevel }]" :key="item.value"
-            :label="item.label" :value="item.value" />
+          <el-option v-for="item in ['High_Risk','Medium_Risk','Low_Risk']" :key="item"
+            :label="item" :value="item" />
         </el-select>
       </el-descriptions-item>
       <el-descriptions-item>
@@ -58,6 +58,7 @@
 defineProps({
   product: Object
 })
+defineEmits(['close'])
 // todo
 </script>
   

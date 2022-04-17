@@ -94,7 +94,7 @@ onMounted(() => {
 <style lang="scss">
 .nscm-atoms-main {
   .el-collapse-item__header {
-    background-color: #F5F5F5;
+    background-color: #ffffff;
     border-radius: 7px;
     padding-left: 10px;
     font-weight: bold;
@@ -103,7 +103,7 @@ onMounted(() => {
   }
   .el-collapse-item__wrap {
     border-radius: 10px;
-    background-color: #F5F5F5;
+    background-color: #ffffff;
     margin-bottom: 5px;
   }
 }

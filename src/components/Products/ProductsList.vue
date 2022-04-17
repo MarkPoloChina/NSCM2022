@@ -42,6 +42,7 @@ defineEmits(['EditProduct'])
           <el-descriptions title="产品属性" :column="4" border>
             <template #extra>
               <el-button type="primary" @click="$emit('EditProduct',product)">修改属性</el-button>
+              <el-button type="success" @click="$emit('EditProduct',product)">新增属性</el-button>
             </template>
             <el-descriptions-item>
               <template #label>
@@ -91,7 +92,7 @@ defineEmits(['EditProduct'])
 // }
 .nscm-atoms-main {
   .el-collapse-item__header {
-    background-color: #F5F5F5;
+    background-color: #ffffff;
     border-radius: 7px;
     padding-left: 10px;
     font-weight: bold;
@@ -101,7 +102,7 @@ defineEmits(['EditProduct'])
 
   .el-collapse-item__wrap {
     border-radius: 10px;
-    background-color: #F5F5F5;
+    background-color: #ffffff;
     margin-bottom: 5px;
   }
 }
