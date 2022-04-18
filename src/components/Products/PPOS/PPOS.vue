@@ -1,6 +1,7 @@
 <script setup>
+import { ElMessage } from 'element-plus'
 import { useStore } from 'vuex'
-import { ArrowLeft, Search, Edit, Check, FolderChecked, ArrowLeftBold, ArrowRightBold, CloseBold, Help, Grid } from '@element-plus/icons-vue'
+import { ArrowLeft, Search, Edit, Check, FolderChecked, ArrowLeftBold, ArrowRightBold, CloseBold, Help, Grid, Plus, ZoomIn, Download, Delete } from '@element-plus/icons-vue'
 import PPOSWorkplace from './PPOSWorkplace.vue'
 import { getCurrentInstance, onMounted, reactive, ref } from 'vue'
 const store = useStore()
@@ -9,6 +10,7 @@ const zoom = ref(100)
 const value1 = ref(false)
 const sideMenusAtom = reactive({ value: [] })
 const order = ref(-1)
+const fileList = reactive({ value: [] })
 const atomsList = reactive({
   value: [{
     serviceId: '',
@@ -33,7 +35,14 @@ const getAtomName = (service) => {
   })
   return str
 }
+const goCV = () => {
+  ElMessage.info('正在识别')
+  dialogVisible.value = false
+  order.value = 9
+  
+}
 const keyWord = ref('')
+const dialogVisible = ref(false)
 onMounted(() => {
   proxy.$http.AtomsAPI.getAtoms().then((rsp) => {
     atomsList.value = rsp.data
@@ -41,9 +50,16 @@ onMounted(() => {
       sideMenusAtom.value = rsp.data
     })
   })
-  console.log(store.getters.test_getAtom)
-  test_tree.value = store.getters.test_getAtom
+  test_tree.value = {}
 })
+let fun = () => {
+  test_tree.value = store.getters.test_getAtom
+}
+let sleep = function(fun,time){
+  setTimeout(()=>{
+    fun();
+  },time);
+}
 const atomStartAdd = (atom, event) => {
   event.dataTransfer.setData("Text", atom.serviceId);
 }
@@ -107,6 +123,22 @@ const test_tree = reactive({ value: [] })
         <div class="nscm-template"><button>智能预测</button></div>
         <div class="nscm-template"><button>使用模板</button></div>
         <div class="nscm-template"><button>使用暂存</button></div>
+        <div class="nscm-template"><button @click="dialogVisible = true">图片导入</button></div>
+        <el-dialog v-model="dialogVisible" title="图片识别导入" width="50%">
+          <span>选择一张图片来导入</span>
+          <br>
+          <el-upload list-type="picture-card" :limit="1" :auto-upload="false" :file-list="fileList.value">
+            <el-icon>
+              <Plus />
+            </el-icon>
+          </el-upload>
+          <template #footer>
+            <span class="dialog-footer">
+              <el-button @click="dialogVisible = false">取消</el-button>
+              <el-button type="primary" @click="goCV">确认</el-button>
+            </span>
+          </template>
+        </el-dialog>
       </el-aside>
       <el-container>
         <el-header>
@@ -119,18 +151,18 @@ const test_tree = reactive({ value: [] })
             <div class="nscm-zoom">
               <el-slider v-model="zoom" :min="50" :max="200" :marks="{ 50: '50%', 100: '100%', 200: '200%' }" />
             </div>
-            <el-switch v-model="value1" active-text="原子服务推荐" class="nscm-sw"/>
+            <el-switch v-model="value1" active-text="原子服务推荐" class="nscm-sw" />
             <el-tooltip effect="dark" content="撤销" placement="bottom">
-              <el-button :icon="ArrowLeftBold" circle @click="order=0"/>
+              <el-button :icon="ArrowLeftBold" circle @click="order = 0" />
             </el-tooltip>
             <el-tooltip effect="dark" content="重做" placement="bottom">
-              <el-button :icon="ArrowRightBold" circle @click="order=1"/>
+              <el-button :icon="ArrowRightBold" circle @click="order = 1" />
             </el-tooltip>
             <el-tooltip effect="dark" content="检查合理性" placement="bottom">
               <el-button type="primary" :icon="Help" circle />
             </el-tooltip>
             <el-tooltip effect="dark" content="清空" placement="bottom">
-              <el-button type="danger" :icon="CloseBold" circle @click="order=2"/>
+              <el-button type="danger" :icon="CloseBold" circle @click="order = 2" />
             </el-tooltip>
             <el-tooltip effect="dark" content="暂存" placement="bottom">
               <el-button type="warning" :icon="FolderChecked" circle />
@@ -141,7 +173,7 @@ const test_tree = reactive({ value: [] })
           </div>
         </el-header>
         <el-main>
-          <PPOSWorkplace :order="order" @done="order=-1"></PPOSWorkplace>
+          <PPOSWorkplace :order="order" @done="order = -1"></PPOSWorkplace>
         </el-main>
       </el-container>
     </el-container>
@@ -220,6 +252,7 @@ const test_tree = reactive({ value: [] })
     right: 500px;
     top: -5px;
   }
+
   .nscm-sw {
     margin-right: 40px;
   }

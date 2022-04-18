@@ -25,9 +25,16 @@ watch(prop,(newV,oldV)=>{
     step.value++
   } else if (newV.order===2) {
     step.value=0
-  }
-  list.value = buildLevel(reactive((store.getters.test_getStep)[step.value]))
+  } else if (newV.order === 9) {
+    setTimeout(()=>{
+      list.value = buildLevel(reactive(store.getters.test_getJson))
+  
   obj.value = store.getters.test_getJson
+    
+  },2000);
+  }
+  // list.value = buildLevel(reactive((store.getters.test_getStep)[step.value]))
+  
   emit('done')
 })
 const emit = defineEmits(["done"])
@@ -40,9 +47,9 @@ onMounted(() => {
   //   obj.value = rsp.data.data
   //   console.log(list.value)
   // })
-  list.value = buildLevel(reactive(store.getters.test_getJson))
-  // list.value = buildLevel(reactive((store.getters.test_getStep)[step.value]))
-  obj.value = store.getters.test_getJson
+  // list.value = buildLevel(reactive(store.getters.test_getJson))
+  // // list.value = buildLevel(reactive((store.getters.test_getStep)[step.value]))
+  // obj.value = store.getters.test_getJson
   // const test_json = reactive(store.getters.test_getJson)
   // list.value = jsonToLevel(test_json)
 })
